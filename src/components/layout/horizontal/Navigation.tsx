@@ -47,7 +47,7 @@ const Navigation = () => {
   return (
     <div
       {...(!isBreakpointReached && {
-        className: classnames(horizontalLayoutClasses.navigation, 'relative flex bg-[var(--bg-dark)]')
+        className: classnames(horizontalLayoutClasses.navigation, 'relative flex bg-[var(--bg-header)] text-white')
       })}
     >
       <StyledDiv

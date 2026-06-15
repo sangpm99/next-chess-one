@@ -80,8 +80,9 @@
   --drawer-z-index: var(--mui-zIndex-drawer);
   --backdrop-color: rgb(var(--mui-mainColorChannels-light) / 0.5);
   --mui-mainColorChannels-shadow: var(--mui-mainColorChannels-lightShadow);
-  --bg-default: #F5EAD8;
-  --bg-dark: #EBD4AE;
+  --bg-default: #F8F4EB;
+  --bg-dark: #F1EDE2;
+  --bg-header: #73634f;
 }
 
 [data-dark] {
@@ -209,26 +210,18 @@ code {
 }
 
 /* 👉 Custom code */
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  position: relative;
+/* Text */
+.heading-subtitle {
+  font-size: 16px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--mui-palette-primary-main);
+  font-weight: 600;
 }
 
-body::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: url("/images/backgrounds/bg-3.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.1;
-  z-index: -1;
-}
-
-
-.mui-jewkus {
-  box-shadow: none !important;
+.heading-title {
+  line-height: 1.2;
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 30px;
 }
