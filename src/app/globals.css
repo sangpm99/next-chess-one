@@ -210,6 +210,10 @@ code {
 }
 
 /* 👉 Custom code */
+.rounded-5xl {
+  border-radius: 4rem;
+}
+
 /* Text */
 .heading-subtitle {
   font-size: 16px;
