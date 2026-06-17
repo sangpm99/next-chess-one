@@ -68,7 +68,7 @@ export default function StatCounter() {
   const digits = String(randomNumber).split('').map(Number)
 
   return (
-    <div className='grid grid-cols-3'>
+    <div className='grid grid-cols-1 sm:grid-cols-3'>
       <div className='flex gap-3 p-3'>
         <div>
           <UsersGroup width={50} height={50} color='var(--mui-palette-primary-main)' />
