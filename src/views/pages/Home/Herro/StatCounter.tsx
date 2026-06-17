@@ -68,25 +68,33 @@ export default function StatCounter() {
   const digits = String(randomNumber).split('').map(Number)
 
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-3'>
-      <div className='flex gap-3 p-3'>
-        <div>
+    <div className='grid grid-cols-3'>
+      <div className='flex flex-col sm:flex-row items-center sm:gap-3 py-3 ms:p-3'>
+        <div className='hidden sm:block'>
           <UsersGroup width={50} height={50} color='var(--mui-palette-primary-main)' />
         </div>
 
-        <div>
+        <div className='block sm:hidden'>
+          <UsersGroup width={35} height={35} color='var(--mui-palette-primary-main)' />
+        </div>
+
+        <div className='flex sm:block flex-col items-center'>
           <div className='font-bold text-xl'>150K+</div>
 
           <div>Kỳ thủ</div>
         </div>
       </div>
 
-      <div className='flex gap-3 p-3'>
-        <div>
+      <div className='flex flex-col sm:flex-row items-center sm:gap-3 p-3'>
+        <div className='hidden sm:block'>
           <Earth width={50} height={50} color='var(--mui-palette-primary-main)' />
         </div>
 
-        <div>
+        <div className='block sm:hidden'>
+          <Earth width={35} height={35} color='var(--mui-palette-primary-main)' />
+        </div>
+
+        <div className='flex sm:block flex-col items-center'>
           {mounted && (
             <div className='flex font-bold text-xl'>
               {digits.map((d, idx) => (
@@ -99,15 +107,19 @@ export default function StatCounter() {
         </div>
       </div>
 
-      <div className='flex gap-3 p-3'>
-        <div>
+      <div className='flex flex-col sm:flex-row items-center sm:gap-3 py-3 sm:p-3'>
+        <div className='hidden sm:block'>
           <Swords width={50} height={50} color='var(--mui-palette-primary-main)' />
         </div>
 
-        <div>
+        <div className='block sm:hidden'>
+          <Swords width={35} height={35} color='var(--mui-palette-primary-main)' />
+        </div>
+
+        <div className='flex sm:block flex-col items-center'>
           <div className='font-bold text-xl'>5M+</div>
 
-          <div>Số ván đã chơi</div>
+          <div>Số ván</div>
         </div>
       </div>
     </div>
