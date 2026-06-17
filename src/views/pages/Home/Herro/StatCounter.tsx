@@ -29,7 +29,7 @@ const variants = {
 
 function Digit({ digit, direction }: DigitProps) {
   return (
-    <div className='relative h-7 w-4 overflow-hidden flex justify-center items-center'>
+    <div className='relative h-7 overflow-hidden flex justify-center items-center' style={{ width: '13px' }}>
       <AnimatePresence mode='popLayout' custom={direction}>
         <motion.span
           key={digit}
@@ -77,7 +77,7 @@ export default function StatCounter() {
         <div>
           <div className='font-bold text-xl'>150K+</div>
 
-          <div>Players</div>
+          <div>Kỳ thủ</div>
         </div>
       </div>
 
@@ -95,7 +95,7 @@ export default function StatCounter() {
             </div>
           )}
 
-          <div>Online</div>
+          <div>Trực tuyến</div>
         </div>
       </div>
 
@@ -107,7 +107,7 @@ export default function StatCounter() {
         <div>
           <div className='font-bold text-xl'>5M+</div>
 
-          <div>Game Played</div>
+          <div>Số ván đã chơi</div>
         </div>
       </div>
     </div>

@@ -83,6 +83,8 @@
   --bg-default: #F8F4EB;
   --bg-dark: #F1EDE2;
   --bg-header: #73634f;
+  --primary: var(--mui-palette-primary-main);
+  --secondary: #77b300;
 }
 
 [data-dark] {
@@ -229,3 +231,94 @@ code {
   font-weight: 600;
   font-size: 30px;
 }
+
+.font-ink {
+  font-family: var(--font-ink), serif;
+}
+
+/* Animation */
+.flash {
+  animation: flash 200ms ease-in-out;
+}
+
+@keyframes flash {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+.fade-up {
+  animation: fade-up 0.5s ease both;
+  animation-delay: 200ms;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.expand-width-full {
+  animation: expand-width-full 0.75s ease-in-out both;
+}
+
+@keyframes expand-width-full {
+  from {
+    width: 0;
+    opacity: 0.25;
+  }
+
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+.expand-width-collapse {
+  animation: expand-width-collapse 0.75s ease-in-out both;
+}
+
+@keyframes expand-width-collapse {
+  from {
+    width: 100%;
+    opacity: 1;
+  }
+
+  to {
+    width: 0;
+    opacity: 0;
+  }
+}
+
+.shop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: linear-gradient(180deg, #5cb85c 0%, #3a8a3a 50%, #2d6e2d 100%);
+  border: 2px solid #1e5c1e;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.35),
+    inset 0 -3px 6px rgba(0,0,0,0.3),
+    0 4px 10px rgba(0,0,0,0.35);
+  transition: transform 0.1s, box-shadow 0.1s;
+  position: relative;
+  overflow: hidden;
+}
+/* Hiệu ứng bóng sáng phía trên */
+.shop-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 50px;
+  pointer-events: none;
+}
+.shop-btn:hover { transform: translateY(-1px); }
+.shop-btn:active { transform: translateY(1px); }

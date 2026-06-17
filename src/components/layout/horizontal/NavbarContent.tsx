@@ -3,6 +3,8 @@
 // Third-party Imports
 import classnames from 'classnames'
 
+import Button from '@mui/material/Button'
+
 // Component Imports
 import NavToggle from './NavToggle'
 import Logo from '@components/layout/shared/Logo'
@@ -28,9 +30,12 @@ const NavbarContent = () => {
         {/* Hide Logo on Smaller screens */}
         {!isBreakpointReached && <Logo />}
       </div>
-      <div className='flex items-center'>
-        <ModeDropdown />
-        <UserDropdown />
+      <div className='flex items-center gap-2'>
+        {/*<ModeDropdown />*/}
+        {/*<UserDropdown />*/}
+
+        <Button variant='outlined'>Đăng nhập</Button>
+        <Button variant='contained'>Tạo tài khoản</Button>
       </div>
     </div>
   )

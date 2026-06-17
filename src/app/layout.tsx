@@ -1,3 +1,5 @@
+import localFont from 'next/font/local'
+
 // MUI Imports
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript'
 
@@ -21,6 +23,12 @@ export const metadata = {
   description: 'ChessONE'
 }
 
+const utmInk = localFont({
+  src: './fonts/ink.ttf',
+  variable: '--font-ink',
+  display: 'swap'
+})
+
 const RootLayout = async (props: ChildrenType) => {
   const { children } = props
 
@@ -32,7 +40,7 @@ const RootLayout = async (props: ChildrenType) => {
   const direction = 'ltr'
 
   return (
-    <html id='__next' lang='en' dir={direction} suppressHydrationWarning>
+    <html id='__next' lang='vi' className={utmInk.variable} dir={direction} suppressHydrationWarning>
       <body className='flex is-full min-bs-full flex-auto flex-col'>
         <InitColorSchemeScript attribute='data' defaultMode={systemMode} />
         {children}
