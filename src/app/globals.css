@@ -80,11 +80,18 @@
   --drawer-z-index: var(--mui-zIndex-drawer);
   --backdrop-color: rgb(var(--mui-mainColorChannels-light) / 0.5);
   --mui-mainColorChannels-shadow: var(--mui-mainColorChannels-lightShadow);
-  --bg-default: #F8F4EB;
-  --bg-dark: #F1EDE2;
+  --bg-default: #faf7f2;
+  --bg-dark: #fcf3e8;
   --bg-header: #73634f;
   --primary: var(--mui-palette-primary-main);
-  --secondary: #77b300;
+  --secondary: #326054;
+  --gold: #fdeed0;
+  --gold-dark: #e9ac02;
+  --silver: #eff0ee;
+  --silver-dark: #7f98a4;
+  --copper: #f9e0ca;
+  --copper-dark: #c97424;
+  --border: #eedbc8;
 }
 
 [data-dark] {
@@ -236,6 +243,35 @@ code {
   font-family: var(--font-ink), serif;
 }
 
+.one-line {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.two-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.three-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.link:hover {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 /* Animation */
 .flash {
   animation: flash 200ms ease-in-out;
@@ -292,4 +328,25 @@ code {
     width: 0;
     opacity: 0;
   }
+}
+
+.floating {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.floating-hover {
+  transition: transform 200ms ease-in-out;
+}
+
+.floating-hover:hover {
+  transform: translateY(-15px);
 }

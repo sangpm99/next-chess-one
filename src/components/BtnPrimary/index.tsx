@@ -7,7 +7,7 @@ import styles from './BtnPrimary.module.css'
 export default function BtnPrimary({ children }: { children: ReactNode }) {
   return (
     <button
-      className={`py-3 px-5 text-xl sm:text-2xl inline-flex items-center gap-1 cursor-pointer play-btn text-white rounded-5xl relative overflow-hidden text-nowrap ${styles.container}`}
+      className={`py-3 px-5 text-xl sm:text-2xl inline-flex items-center gap-1 cursor-pointer text-white rounded-5xl relative overflow-hidden text-nowrap ${styles['play-btn']}`}
       style={{
         background: 'linear-gradient(180deg, #5cb85c 0%, #3a8a3a 50%, #2d6e2d 100%)',
         border: '2px solid #1e5c1e',

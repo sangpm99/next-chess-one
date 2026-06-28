@@ -1,17 +1,34 @@
+import SectionWrapper from '@/components/SectionWrapper'
 import Herro from './Herro'
+import Ranking from './Ranking'
+import Matches from './Matches'
 
 export default function Home() {
   return (
     <div>
-      <Herro></Herro>
+      <SectionWrapper>
+        <Herro />
+      </SectionWrapper>
 
-      {/*<div className='text-end'>*/}
-      {/*  <p className='hidden sm:block'>sm </p>*/}
-      {/*  <p className='hidden md:block'>md </p>*/}
-      {/*  <p className='hidden lg:block'>lg </p>*/}
-      {/*  <p className='hidden xl:block'>xl </p>*/}
-      {/*  <p className='hidden 2xl:block'>2xl </p>*/}
-      {/*</div>*/}
+      <div className='h-20'></div>
+
+      <SectionWrapper className='bg-(--bg-dark) py-15 relative'>
+        <div
+          className='absolute top-0 left-0 w-full h-full z-1'
+          style={{
+            backgroundImage:
+              'url(https://cdn.vietnamexploration.com/vnexploration/2026/06/27183346-7bd34746-bg-11.webp)',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover'
+          }}
+        ></div>
+        <Ranking className='relative z-2' />
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <Matches />
+      </SectionWrapper>
     </div>
   )
 }

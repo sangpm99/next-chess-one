@@ -53,7 +53,9 @@ const Footer = (props: Props) => {
         [horizontalLayoutClasses.footerContentWide]: footerContentWide
       })}
     >
-      <div className={horizontalLayoutClasses.footerContentWrapper}>{children}</div>
+      <div className={`${horizontalLayoutClasses.footerContentWrapper} max-w-full bg-(--bg-header) text-white`}>
+        {children}
+      </div>
     </StyledFooter>
   )
 }

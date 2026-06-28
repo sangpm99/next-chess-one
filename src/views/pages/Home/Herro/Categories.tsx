@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 interface Service {
   title: string
-  name: string
+  value: string
   image: string
 }
 
@@ -22,7 +22,7 @@ export default function Categories({ services, selected, previous, onSelectServi
         <div
           className='relative aspect-square rounded-3xl sm:rounded-4xl overflow-hidden cursor-pointer'
           style={{
-            ...(selected?.name === service.name
+            ...(selected?.value === service.value
               ? {
                   border: '5px solid transparent',
                   outline: '1px dashed var(--mui-palette-primary-main)'
@@ -35,11 +35,11 @@ export default function Categories({ services, selected, previous, onSelectServi
           key={index}
           onClick={() => onSelectService(service)}
         >
-          <Image src={service.image} alt={service.name} fill priority style={{ objectFit: 'cover' }} />
+          <Image src={service.image} alt={service.value} fill priority style={{ objectFit: 'cover' }} />
 
-          {selected?.name === service.name ? (
+          {selected?.value === service.value ? (
             <div className='absolute top-0 bottom-0 left-0 bg-black/50 expand-width-full'></div>
-          ) : previous?.name === service.name ? (
+          ) : previous?.value === service.value ? (
             <div className='absolute top-0 bottom-0 left-0 bg-black/50 expand-width-collapse'></div>
           ) : null}
         </div>
