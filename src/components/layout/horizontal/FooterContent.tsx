@@ -19,16 +19,13 @@ const FooterContent = () => {
     >
       <div className='flex items-center gap-4'>
         <Link href='https://chessone.net' target='_blank' className='link'>
-          License
+          Liên hệ
         </Link>
         <Link href='https://chessone.net' target='_blank' className='link'>
-          More Themes
+          Điều khoản sử dụng
         </Link>
         <Link href='https://chessone.net' target='_blank' className='link'>
-          Documentation
-        </Link>
-        <Link href='https://chessone.net' target='_blank' className='link'>
-          Support
+          Chính sách quyền riêng tư
         </Link>
       </div>
 
