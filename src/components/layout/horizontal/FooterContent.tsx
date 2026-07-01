@@ -17,7 +17,7 @@ const FooterContent = () => {
         'flex flex-col items-center justify-center flex-wrap gap-4'
       )}
     >
-      <div className='flex items-center gap-4'>
+      <div className='flex flex-col sm:flex-row items-center gap-4'>
         <Link href='https://chessone.net' target='_blank' className='link'>
           Liên hệ
         </Link>
