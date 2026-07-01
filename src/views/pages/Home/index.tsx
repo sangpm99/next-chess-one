@@ -2,6 +2,7 @@ import SectionWrapper from '@/components/SectionWrapper'
 import Herro from './Herro'
 import Ranking from './Ranking'
 import Matches from './Matches'
+import Faqs from './Faqs'
 
 export default function Home() {
   return (
@@ -10,7 +11,7 @@ export default function Home() {
         <Herro />
       </SectionWrapper>
 
-      <div className='h-20'></div>
+      <div className='h-20 hidden lg:block'></div>
 
       <SectionWrapper className='bg-(--bg-dark) py-15 relative'>
         <div
@@ -28,6 +29,10 @@ export default function Home() {
 
       <SectionWrapper>
         <Matches />
+      </SectionWrapper>
+
+      <SectionWrapper className='bg-(--bg-dark) py-15 relative -mb-[24px]'>
+        <Faqs />
       </SectionWrapper>
     </div>
   )
