@@ -11,7 +11,6 @@ export default function Faqs() {
         <Image
           src='https://cdn.vietnamexploration.com/vnexploration/2026/07/01083402-00bcde8a-faqs-3.webp'
           alt='faqs'
-          priority
           width={407}
           height={390}
           className='shadow relative z-2 rounded w-full md:w-[407px] h-auto md:h-[390px]'
@@ -20,7 +19,6 @@ export default function Faqs() {
         <Image
           src='https://cdn.vietnamexploration.com/vnexploration/2026/07/01083345-0640bdbf-fqas-2.webp'
           alt='faqs'
-          priority
           width={407}
           height={390}
           className='shadow relative rounded xl:absolute xl:top-[50px] xl:left-[300px] z-3 hidden md:block'
@@ -32,7 +30,6 @@ export default function Faqs() {
         <Image
           src='https://cdn.vietnamexploration.com/vnexploration/2026/06/29162451-c213be32-fqas.webp'
           alt='faqs'
-          priority
           width={407}
           height={390}
           className='shadow relative rounded xl:absolute xl:top-[150px] xl:left-[150px] z-1 hidden xl:block'

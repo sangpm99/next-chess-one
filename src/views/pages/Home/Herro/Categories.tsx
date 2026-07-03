@@ -31,7 +31,7 @@ export default function Categories({ games, game, previous, onSelectService }: P
           key={index}
           onClick={() => onSelectService(item)}
         >
-          <Image src={item.image} alt={item.value} fill priority style={{ objectFit: 'cover' }} />
+          <Image src={item.image} alt={item.value} fill style={{ objectFit: 'cover' }} />
 
           {game?.value === item.value ? (
             <div className='absolute top-0 bottom-0 left-0 bg-black/50 expand-width-full'></div>
