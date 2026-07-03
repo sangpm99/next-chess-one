@@ -1,0 +1,9 @@
+.overlay {
+  background-color: #fff;
+  animation: fadeIn 300ms forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 0.5; }
+}

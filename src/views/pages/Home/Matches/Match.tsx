@@ -3,12 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-interface Game {
-  title: string
-  description: string
-  image: string
-  value: string
-}
+import type { Game } from '@/types'
 
 interface Props {
   game: Game

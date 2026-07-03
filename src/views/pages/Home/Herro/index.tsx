@@ -8,54 +8,35 @@ import StatCounter from '@views/pages/Home/Herro/StatCounter'
 import Categories from '@views/pages/Home/Herro/Categories'
 import BtnPrimary from '@components/BtnPrimary'
 
-interface Service {
-  title: string
-  value: string
-  image: string
-}
+import type { Game } from '@/types'
 
-const services: Service[] = [
-  {
-    title: 'Cờ Vua',
-    value: 'chess',
-    image: 'https://cdn.vietnamexploration.com/vnexploration/2026/06/15093807.co-vua.webp'
-  },
-  {
-    title: 'Cờ Tướng',
-    value: 'xiangqi',
-    image: 'https://cdn.vietnamexploration.com/vnexploration/2026/06/15093826.co-tuong.webp'
-  },
-  {
-    title: 'Cờ Úp',
-    value: 'jieqi',
-    image: 'https://cdn.vietnamexploration.com/vnexploration/2026/06/15093856.co-up.webp'
-  },
-  {
-    title: 'Cờ Caro',
-    value: 'gomuku',
-    image: 'https://cdn.vietnamexploration.com/vnexploration/2026/06/15093911.gomuku.webp'
-  }
-]
+import { games } from '@/enums'
 
 export default function Herro() {
-  const [selected, setSelected] = useState<Service>(services[0])
-  const [previous, setPrevious] = useState<Service | null>(null)
+  const [selectedGame, setSelectedGame] = useState<Game>(games[0])
+  const [previous, setPrevious] = useState<Game | null>(null)
 
-  const onSelectService = (service: Service) => {
-    setPrevious(selected)
-    setSelected(service)
+  const onSelectService = (game: Game) => {
+    setPrevious(selectedGame)
+    setSelectedGame(game)
   }
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-2'>
       <div
-        key={selected?.image}
+        key={selectedGame?.image}
         className='relative h-[300px] sm:h-[500px] lg:h-[900px] rounded-4xl overflow-hidden flash order-2 md:order-1'
       >
-        <Image src={selected?.image ?? ''} alt={selected?.value ?? ''} fill priority style={{ objectFit: 'cover' }} />
+        <Image
+          src={selectedGame?.image ?? ''}
+          alt={selectedGame?.value ?? ''}
+          fill
+          priority
+          style={{ objectFit: 'cover' }}
+        />
 
         <div className='absolute bottom-[50px] left-1/2 -translate-x-1/2 fade-up'>
-          <BtnPrimary>Chơi {selected.title}</BtnPrimary>
+          <BtnPrimary href={`/play?game=${selectedGame.value}`}>Chơi {selectedGame.title}</BtnPrimary>
         </div>
       </div>
 
@@ -77,12 +58,12 @@ export default function Herro() {
         </div>
 
         <div className='hidden lg:grid grid-cols-4 gap-8 p-8 bg-(--bg-default) rounded-5xl z-2 ml-[-110px]'>
-          <Categories services={services} selected={selected} previous={previous} onSelectService={onSelectService} />
+          <Categories games={games} game={selectedGame} previous={previous} onSelectService={onSelectService} />
         </div>
       </div>
 
       <div className='grid lg:hidden grid-cols-4 gap-2 py-3 bg-(--bg-default) rounded-5xl z-2 order-3'>
-        <Categories services={services} selected={selected} previous={previous} onSelectService={onSelectService} />
+        <Categories games={games} game={selectedGame} previous={previous} onSelectService={onSelectService} />
       </div>
     </div>
   )

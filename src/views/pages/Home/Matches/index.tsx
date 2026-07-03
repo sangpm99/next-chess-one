@@ -7,54 +7,8 @@ import Button from '@mui/material/Button'
 import MatchSidebar from './MatchSidebar'
 import Match from './Match'
 
-interface Status {
-  title: string
-  value: string
-}
-
-const statuses: Status[] = [
-  { title: 'Gần đây', value: 'completed' },
-  { title: 'Đang chơi', value: 'in-progress' },
-  { title: 'Đang chờ', value: 'waiting' }
-]
-
-interface Game {
-  title: string
-  description: string
-  image: string
-  value: string
-}
-
-const games: Game[] = [
-  {
-    title: 'Cờ Vua',
-    description:
-      'Môn cờ chiến thuật kinh điển nơi mỗi nước đi đều quyết định cục diện. Thử thách tư duy, rèn luyện khả năng tính toán và chinh phục đối thủ bằng chiến lược sắc bén.',
-    image: '',
-    value: 'chess'
-  },
-  {
-    title: 'Cờ Tướng',
-    description:
-      'Đắm mình trong nghệ thuật điều binh khiển tướng của phương Đông. Vận dụng chiến thuật linh hoạt, kiểm soát thế trận và giành chiến thắng.',
-    image: '',
-    value: 'xiangqi'
-  },
-  {
-    title: 'Cờ Úp',
-    description:
-      'Biến thể đầy bất ngờ với các quân cờ được giấu kín khi bắt đầu ván đấu. Khả năng ứng biến, phán đoán và tận dụng thời cơ để chiến thắng.',
-    image: '',
-    value: 'jieqi'
-  },
-  {
-    title: 'Cờ Caro',
-    description:
-      'Luật chơi đơn giản nhưng đầy tính cạnh tranh. Sắp xếp năm quân liên tiếp, dự đoán ý đồ đối thủ và tận hưởng những trận đấu nhanh và hấp dẫn.',
-    image: '',
-    value: 'gomuku'
-  }
-]
+import type { Game } from '@/types'
+import { statuses, games } from '@/enums'
 
 export default function Matches() {
   const [status, setStatus] = useState<string>('in-progress')

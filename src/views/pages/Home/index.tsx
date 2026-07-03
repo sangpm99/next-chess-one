@@ -31,7 +31,7 @@ export default function Home() {
         <Matches />
       </SectionWrapper>
 
-      <SectionWrapper className='bg-(--bg-dark) py-15 relative -mb-[24px]'>
+      <SectionWrapper className='bg-(--bg-dark) py-15 relative'>
         <Faqs />
       </SectionWrapper>
     </div>

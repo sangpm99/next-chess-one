@@ -1,12 +1,20 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import type { ReactNode, ComponentPropsWithoutRef } from 'react'
+
+import Link from 'next/link'
 
 import styles from './BtnPrimary.module.css'
 
-export default function BtnPrimary({ children }: { children: ReactNode }) {
+interface Props extends ComponentPropsWithoutRef<'a'> {
+  href: string
+  children: ReactNode
+}
+
+export default function BtnPrimary({ href, children }: Props) {
   return (
-    <button
+    <Link
+      href={href}
       className={`py-3 px-5 text-xl sm:text-2xl inline-flex items-center gap-1 cursor-pointer text-white rounded-5xl relative overflow-hidden text-nowrap ${styles['play-btn']}`}
       style={{
         background: 'linear-gradient(180deg, #5cb85c 0%, #3a8a3a 50%, #2d6e2d 100%)',
@@ -30,6 +38,6 @@ export default function BtnPrimary({ children }: { children: ReactNode }) {
         <path d='M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z' />
       </svg>
       {children}
-    </button>
+    </Link>
   )
 }
