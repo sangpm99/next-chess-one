@@ -67,3 +67,18 @@ export const statuses: Selection[] = [
   { title: 'Đang chơi', value: 'in-progress' },
   { title: 'Đang chờ', value: 'waiting' }
 ]
+
+export const chessPieces: string[] = [
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08142845-966515f7-wr.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08142948-71c5fd3f-wq.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08142956-4a3c9849-wp.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143003-665c1977-wn.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143016-57e61393-wk.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143023-0d63d52d-wb.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143031-76461741-br.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143037-4996bf41-bq.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143044-cfedda07-bp.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143050-6ae5340d-bn.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143059-ed9b886e-bk.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143106-a59c1999-bb.webp'
+]

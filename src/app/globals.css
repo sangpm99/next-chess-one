@@ -83,6 +83,7 @@
   --bg-default: #faf7f2;
   --bg-dark: #fcf3e8;
   --bg-header: #73634f;
+  --bg-lighter: #fdf6ec;
   --primary: var(--mui-palette-primary-main);
   --secondary: #326054;
   --gold: #fdeed0;
@@ -92,6 +93,7 @@
   --copper: #f9e0ca;
   --copper-dark: #c97424;
   --border: #eedbc8;
+  --border-lighter: #e3d5bd;
 }
 
 [data-dark] {
@@ -227,6 +229,10 @@ img {
 
 .rounded-5xl {
   border-radius: 4rem;
+}
+
+.border-transparent {
+  border-color: transparent;
 }
 
 /* Text */

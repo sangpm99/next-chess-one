@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import Image from 'next/image'
 
@@ -19,10 +19,14 @@ import { games, gameModes } from '@/enums'
 
 import type { Game } from '@/types'
 
+import { findGame } from '@/utils'
+
 import styles from './Play.module.css'
 
 export default function Play() {
-  const [selectedGame, setSelectedGame] = useState<string>(games[0].value)
+  const searchParams = useSearchParams()
+
+  const [selectedGame, setSelectedGame] = useState<string>(findGame(searchParams.get('game'))?.value || games[0].value)
   const [selectedMode, setSelectedMode] = useState<string>(gameModes[0].value)
   const [isLogin, setIsLogin] = useState(false)
 

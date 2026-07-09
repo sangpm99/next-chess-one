@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 
+import SectionWrapper from '@/components/SectionWrapper'
 import AI from '@/views/pages/Play/Chess/AI'
 
 import { games, gameModes } from '@/enums'
@@ -15,5 +16,11 @@ export default async function AIPage({ params }: Props) {
     notFound()
   }
 
-  return <AI></AI>
+  return (
+    <SectionWrapper>
+      {game?.toLowerCase() === 'chess' && mode?.toLowerCase() === 'ai' && (
+        <AI gameValue={game} gameModeValue={mode}></AI>
+      )}
+    </SectionWrapper>
+  )
 }
