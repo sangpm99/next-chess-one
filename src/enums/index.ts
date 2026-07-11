@@ -84,14 +84,14 @@ export const chessPieces: string[] = [
 ]
 
 export const machineLevels = [
-  '/images/avatars/ai-1.png',
-  '/images/avatars/ai-2.png',
-  '/images/avatars/ai-3.png',
-  '/images/avatars/ai-4.png',
-  '/images/avatars/ai-5.png',
-  '/images/avatars/ai-6.png',
-  '/images/avatars/ai-7.png',
-  '/images/avatars/ai-8.png',
-  '/images/avatars/ai-9.png',
-  '/images/avatars/ai-10.png'
+  '/images/avatars/ai-1.webp',
+  '/images/avatars/ai-2.webp',
+  '/images/avatars/ai-3.webp',
+  '/images/avatars/ai-4.webp',
+  '/images/avatars/ai-5.webp',
+  '/images/avatars/ai-6.webp',
+  '/images/avatars/ai-7.webp',
+  '/images/avatars/ai-8.webp',
+  '/images/avatars/ai-9.webp',
+  '/images/avatars/ai-10.webp'
 ]

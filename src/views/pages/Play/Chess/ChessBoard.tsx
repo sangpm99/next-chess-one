@@ -185,7 +185,7 @@ export default function ChessBoard() {
         }}
       >
         <div className='flex gap-2 items-center'>
-          <CustomAvatar src='/images/avatars/man-1.png' alt='Victor Anderson' size={80} />
+          <CustomAvatar src='/images/avatars/man-1.webp' alt='Victor Anderson' size={80} />
 
           <div>
             <div className='font-ink truncate w-full mb-1 text-xl'>Bạn</div>
