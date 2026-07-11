@@ -12,10 +12,14 @@ import MoveList from './MoveList'
 import GameOverDialog from './GameOverDialog'
 import { useChessSounds } from '@/hooks/useChessSounds'
 import { useChessStore } from '@/stores/chess'
+import { useLeaveGameWarning } from '@/hooks/useLeaveGameWarning'
 
 export default function ChessGame() {
   // Bật âm thanh nước đi - chỉ cần gọi 1 lần ở đây
   useChessSounds()
+
+  // Cảnh báo trước khi rời trang giữa ván đấu - chỉ cần gọi 1 lần ở đây
+  useLeaveGameWarning()
 
   const newGame = useChessStore(s => s.newGame)
   const moveLog = useChessStore(s => s.moveLog)
@@ -31,15 +35,15 @@ export default function ChessGame() {
 
   return (
     <div className='flex flex-wrap items-start justify-center gap-6 p-6'>
+      <div className='flex flex-col w-full lg:w-auto gap-4 items-center'>
+        <GameControls />
+        {/*<MoveList />*/}
+      </div>
+
       {/* "relative inline-block" để GameOverDialog (absolute inset-0) phủ khít đúng bàn cờ */}
       <div className='relative inline-block'>
         <ChessBoard />
         <GameOverDialog />
-      </div>
-
-      <div className='flex flex-col w-full lg:w-auto gap-4 items-center'>
-        <GameControls />
-        {/*<MoveList />*/}
       </div>
     </div>
   )

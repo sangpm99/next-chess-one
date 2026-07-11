@@ -82,3 +82,16 @@ export const chessPieces: string[] = [
   'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143059-ed9b886e-bk.webp',
   'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143106-a59c1999-bb.webp'
 ]
+
+export const machineLevels = [
+  '/images/avatars/ai-1.png',
+  '/images/avatars/ai-2.png',
+  '/images/avatars/ai-3.png',
+  '/images/avatars/ai-4.png',
+  '/images/avatars/ai-5.png',
+  '/images/avatars/ai-6.png',
+  '/images/avatars/ai-7.png',
+  '/images/avatars/ai-8.png',
+  '/images/avatars/ai-9.png',
+  '/images/avatars/ai-10.png'
+]

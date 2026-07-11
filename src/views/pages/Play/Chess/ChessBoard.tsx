@@ -17,6 +17,7 @@ import { useChessStore } from '@/stores/chess'
 import { sq0x88, fileOf, rankOf, EMPTY } from '@/lib/chess/constants'
 import PromotionPicker from './PromotionPicker'
 import { findPieceImageSrc } from '@/utils'
+import { machineLevels } from '@/enums'
 
 export default function ChessBoard() {
   // Luôn select boardVersion để component re-render đúng lúc mỗi khi có nước đi
@@ -31,6 +32,7 @@ export default function ChessBoard() {
   const flipped = useChessStore(s => s.flipped)
   const pendingPromotion = useChessStore(s => s.pendingPromotion)
   const selectSquare = useChessStore(s => s.selectSquare)
+  const currentLevel = useChessStore(s => s.level)
 
   const targets = selected >= 0 ? legalMoves.filter(m => m.from === selected).map(m => m.to) : []
   const isCheckNow = status ? status.check || (status.over && status.reason === 'checkmate') : false
@@ -60,7 +62,7 @@ export default function ChessBoard() {
   return (
     <div className='relative inline-block select-none'>
       <div
-        className={`flex gap-2 items-center justify-between mb-2 bg-[var(--bg-lighter)] rounded-lg border p-3 border-[var(--border-lighter))]`}
+        className={`flex gap-2 items-center justify-between mb-2 bg-(--bg-lighter) rounded-lg border p-3 border-(--border-lighter)`}
         style={{
           backgroundImage: 'url(https://cdn.vietnamexploration.com/vnexploration/2026/06/27183346-7bd34746-bg-11.webp)',
           backgroundPosition: 'center',
@@ -79,7 +81,7 @@ export default function ChessBoard() {
             </div>
           </div>
 
-          <CustomAvatar src='/images/avatars/ai.png' alt='Victor Anderson' size={60} />
+          <CustomAvatar src={machineLevels[currentLevel - 1]} alt='Machine' size={80} />
         </div>
       </div>
 
@@ -109,11 +111,11 @@ export default function ChessBoard() {
                 key={sq}
                 type='button'
                 onClick={() => selectSquare(sq)}
-                className='relative flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-inset'
+                className='relative flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-inset cursor-pointer'
                 style={{
                   background: isLight
-                    ? 'url("https://cdn.vietnamexploration.com/vnexploration/2026/07/08105323-68408db1-chess-white-bg.webp")'
-                    : 'url("https://cdn.vietnamexploration.com/vnexploration/2026/07/08105327-188de57d-chess-black-bg.webp")',
+                    ? 'url("https://cdn.vietnamexploration.com/vnexploration/2026/07/11095802-adee3b91-bg-white-3.webp")'
+                    : 'url("https://cdn.vietnamexploration.com/vnexploration/2026/07/11095757-3b349685-bg-black-3.webp")',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat'
@@ -157,7 +159,7 @@ export default function ChessBoard() {
             return (
               <div
                 key={p.id}
-                className='absolute flex items-center justify-center'
+                className='absolute flex items-center justify-center '
                 style={{
                   width: '12.5%',
                   height: '12.5%',
@@ -166,7 +168,7 @@ export default function ChessBoard() {
                   transition: 'left 180ms ease, top 180ms ease'
                 }}
               >
-                <img src={findPieceImageSrc(p.piece)} alt={p.piece} draggable={false} className='w-[80%] h-[80%]' />
+                <img src={findPieceImageSrc(p.piece)} alt={p.piece} draggable={false} className='w-[80%] h-[80%] ' />
               </div>
             )
           })}
@@ -174,7 +176,7 @@ export default function ChessBoard() {
       </div>
 
       <div
-        className={`mt-2 flex gap-2 items-center justify-between bg-[--bg-lighter] rounded-lg border p-3 border-[var(--border-lighter))]`}
+        className={`mt-2 flex gap-2 items-center justify-between bg-[--bg-lighter] rounded-lg border p-3 border-(--border-lighter)`}
         style={{
           backgroundImage: 'url(https://cdn.vietnamexploration.com/vnexploration/2026/06/27183346-7bd34746-bg-11.webp)',
           backgroundPosition: 'center',
@@ -183,7 +185,7 @@ export default function ChessBoard() {
         }}
       >
         <div className='flex gap-2 items-center'>
-          <CustomAvatar src='/images/avatars/man-1.png' alt='Victor Anderson' size={60} />
+          <CustomAvatar src='/images/avatars/man-1.png' alt='Victor Anderson' size={80} />
 
           <div>
             <div className='font-ink truncate w-full mb-1 text-xl'>Bạn</div>

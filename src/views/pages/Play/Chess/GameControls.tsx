@@ -5,11 +5,23 @@
 
 import { useState } from 'react'
 
+import Button from '@mui/material/Button'
+
 import { useChessStore } from '@/stores/chess'
 
 import { LEVEL_LABELS } from '@/lib/chess/user-stats'
 
 type SideChoice = 'white' | 'black' | 'two-player'
+
+import ConfirmationDialog from '@/components/dialogs/confirmation-dialog'
+
+function SideButton({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <Button onClick={onClick} variant={active ? 'contained' : 'outlined'} className='text-nowrap cursor-pointer'>
+      {label}
+    </Button>
+  )
+}
 
 export default function GameControls() {
   const newGame = useChessStore(s => s.newGame)
@@ -25,6 +37,13 @@ export default function GameControls() {
 
   const [side, setSide] = useState<SideChoice>('white')
   const [level, setLevel] = useState(currentLevel)
+  const [isDialogVisible, setIsDialogVisible] = useState(false)
+
+  const handleConfirmation = (confirm: boolean) => {
+    if (confirm) {
+      resign()
+    }
+  }
 
   return (
     <div className='flex flex-col gap-3 w-full max-w-[560px]'>
@@ -33,15 +52,18 @@ export default function GameControls() {
         <div className='flex gap-2'>
           <SideButton label='Cầm Trắng' active={side === 'white'} onClick={() => setSide('white')} />
           <SideButton label='Cầm Đen' active={side === 'black'} onClick={() => setSide('black')} />
-          <SideButton label='2 người' active={side === 'two-player'} onClick={() => setSide('two-player')} />
+          {/*<SideButton label='2 người' active={side === 'two-player'} onClick={() => setSide('two-player')} />*/}
         </div>
 
         {side !== 'two-player' && (
           <label className='flex flex-col gap-1 text-xs text-[#5b3a29]'>
-            Cấp độ máy:{' '}
-            <span className='font-semibold'>
-              Lv {level} - {LEVEL_LABELS[level]}
+            <span>
+              Cấp độ máy:{' '}
+              <span className='font-semibold'>
+                Lv {level} - {LEVEL_LABELS[level]}
+              </span>
             </span>
+
             <input
               type='range'
               min={1}
@@ -54,13 +76,13 @@ export default function GameControls() {
           </label>
         )}
 
-        <button
-          type='button'
+        <Button
           onClick={() => newGame({ side, vsEngine: side !== 'two-player', level })}
-          className='mt-1 px-3 py-2 rounded-md bg-[#5b3a29] text-white text-sm font-semibold hover:bg-[#4a2f21] transition-colors'
+          variant='contained'
+          className='mt-1'
         >
-          Bắt đầu
-        </button>
+          Chơi lại
+        </Button>
 
         {engineError && <p className='text-xs text-red-700'>{engineError}</p>}
       </div>
@@ -73,39 +95,28 @@ export default function GameControls() {
         {/*>*/}
         {/*  Lật bàn cờ*/}
         {/*</button>*/}
-        <button
-          type='button'
+        <Button
           onClick={() => toggleSound()}
-          className='flex-1 px-3 py-2 rounded-md bg-white border border-[#e3d5bd] text-sm font-medium text-[#5b3a29] hover:bg-[#f5ead7] transition-colors'
+          className='flex-1 rounded-md bg-white border border-[#e3d5bd] text-sm font-medium text-[#5b3a29] hover:bg-[#f5ead7] transition-colors'
         >
           Âm thanh: {soundEnabled ? 'Bật' : 'Tắt'}
-        </button>
+        </Button>
       </div>
 
-      <button
-        type='button'
+      <Button
         disabled={gameOver || !vsEngine || moveLog.length === 0}
-        onClick={() => resign()}
-        className='w-full px-3 py-2 rounded-md bg-white border border-[#e3d5bd] text-sm font-medium text-red-700 hover:bg-red-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors'
+        onClick={() => setIsDialogVisible(true)}
+        className='w-full rounded-md bg-white border border-[#e3d5bd] text-sm font-medium text-red-700 hover:bg-red-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors'
       >
         Xin thua
-      </button>
-    </div>
-  )
-}
+      </Button>
 
-function SideButton({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
-  return (
-    <button
-      type='button'
-      onClick={onClick}
-      className={`flex-1 px-2 py-1.5 rounded-md text-xs font-medium border transition-colors text-nowrap ${
-        active
-          ? 'bg-[#5b3a29] text-white border-[#5b3a29]'
-          : 'bg-white text-[#5b3a29] border-[#e3d5bd] hover:bg-[#f5ead7]'
-      }`}
-    >
-      {label}
-    </button>
+      <ConfirmationDialog
+        isDialogVisible={isDialogVisible}
+        setDialogVisible={setIsDialogVisible}
+        confirmationQuestion='Bạn có chắc chắn muốn đầu hàng?'
+        confirm={handleConfirmation}
+      />
+    </div>
   )
 }
