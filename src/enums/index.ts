@@ -27,7 +27,7 @@ export const games: Game[] = [
   },
   {
     title: 'Cờ Caro',
-    value: 'gomuku',
+    value: 'gomoku',
     image: 'https://cdn.vietnamexploration.com/vnexploration/2026/06/15093911.gomuku.webp',
     description:
       'Luật chơi đơn giản nhưng đầy tính cạnh tranh. Sắp xếp năm quân liên tiếp, dự đoán ý đồ đối thủ và tận hưởng những trận đấu nhanh và hấp dẫn.',
@@ -68,6 +68,19 @@ export const statuses: Selection[] = [
   { title: 'Đang chờ', value: 'waiting' }
 ]
 
+export const machineLevels = [
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11110149-89a538d5-ai-1.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11110200-cdcf276c-ai-2.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11110211-19dbad1c-ai-3.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11110225-19d639b2-ai-4.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11110238-87ac03d2-ai-5.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11110249-0220d5c2-ai-6.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11110259-e3102593-ai-7.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11110316-13f749b5-ai-8.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11110325-51d41ecd-ai-9.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11110337-845b6968-ai-10.webp'
+]
+
 export const chessPieces: string[] = [
   'https://cdn.vietnamexploration.com/vnexploration/2026/07/08142845-966515f7-wr.webp',
   'https://cdn.vietnamexploration.com/vnexploration/2026/07/08142948-71c5fd3f-wq.webp',
@@ -83,15 +96,19 @@ export const chessPieces: string[] = [
   'https://cdn.vietnamexploration.com/vnexploration/2026/07/08143106-a59c1999-bb.webp'
 ]
 
-export const machineLevels = [
-  '/images/avatars/ai-1.webp',
-  '/images/avatars/ai-2.webp',
-  '/images/avatars/ai-3.webp',
-  '/images/avatars/ai-4.webp',
-  '/images/avatars/ai-5.webp',
-  '/images/avatars/ai-6.webp',
-  '/images/avatars/ai-7.webp',
-  '/images/avatars/ai-8.webp',
-  '/images/avatars/ai-9.webp',
-  '/images/avatars/ai-10.webp'
+export const xiangquiPieces: string[] = [
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155308-3c781962-ba.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155325-bd6f085f-bb.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155340-edd10f77-bc.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155353-1d36220f-bk.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155404-d1bce525-bn.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155416-8b1565b9-bp.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155428-2f947d4e-br.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155439-745dd4aa-ra.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155451-f6ac5e2c-rb.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155502-3aeb38ed-rc.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155512-27fd9eb2-rk.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155523-2575ef6d-rn.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155532-491119ea-rp.webp',
+  'https://cdn.vietnamexploration.com/vnexploration/2026/07/11155541-ef457e58-rr.webp'
 ]

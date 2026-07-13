@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation'
 
 import SectionWrapper from '@/components/SectionWrapper'
-import AI from '@/views/pages/Play/Chess/AI'
+import ChessAI from '@/views/pages/Play/Chess/AI'
+import XiangqiAI from '@/views/pages/Play/Xiangqi/AI'
+import JieqiAI from '@/views/pages/Play/Jieqi/AI'
+import GomokuAI from '@/views/pages/Play/Gomoku/AI'
 
 import { games, gameModes } from '@/enums'
 
@@ -19,8 +22,20 @@ export default async function AIPage({ params }: Props) {
   return (
     <SectionWrapper>
       {game?.toLowerCase() === 'chess' && mode?.toLowerCase() === 'ai' && (
-        <AI gameValue={game} gameModeValue={mode}></AI>
+        <ChessAI gameValue={game} gameModeValue={mode}></ChessAI>
       )}
+
+      {/*{game?.toLowerCase() === 'xiangqi' && mode?.toLowerCase() === 'ai' && (*/}
+      {/*  <XiangqiAI gameValue={game} gameModeValue={mode}></XiangqiAI>*/}
+      {/*)}*/}
+
+      {/*{game?.toLowerCase() === 'jieqi' && mode?.toLowerCase() === 'ai' && (*/}
+      {/*  <JieqiAI gameValue={game} gameModeValue={mode}></JieqiAI>*/}
+      {/*)}*/}
+
+      {/*{game?.toLowerCase() === 'gomoku' && mode?.toLowerCase() === 'ai' && (*/}
+      {/*  <GomokuAI gameValue={game} gameModeValue={mode}></GomokuAI>*/}
+      {/*)}*/}
     </SectionWrapper>
   )
 }

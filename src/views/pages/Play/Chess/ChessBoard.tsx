@@ -9,15 +9,14 @@
 //     khi đổi vị trí (left/top), trình duyệt TỰ ĐỘNG chạy animation trượt mượt
 //     thay vì bị "dịch chuyển ngay lập tức" như khi vẽ lại toàn bộ ô mỗi lần.
 
-import { useEffect } from 'react'
-
-import CustomAvatar from '@core/components/mui/Avatar'
+import { useEffect, useState } from 'react'
 
 import { useChessStore } from '@/stores/chess'
 import { sq0x88, fileOf, rankOf, EMPTY } from '@/lib/chess/constants'
 import PromotionPicker from './PromotionPicker'
 import { findPieceImageSrc } from '@/utils'
-import { machineLevels } from '@/enums'
+
+import Player from '@/components/Player'
 
 export default function ChessBoard() {
   // Luôn select boardVersion để component re-render đúng lúc mỗi khi có nước đi
@@ -33,6 +32,7 @@ export default function ChessBoard() {
   const pendingPromotion = useChessStore(s => s.pendingPromotion)
   const selectSquare = useChessStore(s => s.selectSquare)
   const currentLevel = useChessStore(s => s.level)
+  const capturedLog = useChessStore(s => s.capturedLog)
 
   const targets = selected >= 0 ? legalMoves.filter(m => m.from === selected).map(m => m.to) : []
   const isCheckNow = status ? status.check || (status.over && status.reason === 'checkmate') : false
@@ -40,6 +40,9 @@ export default function ChessBoard() {
 
   const rows = [0, 1, 2, 3, 4, 5, 6, 7]
   const cols = [0, 1, 2, 3, 4, 5, 6, 7]
+
+  const [capturedLogMine, setCapturedLogMine] = useState<string[]>([])
+  const [capturedLogCompetitor, setCapturedLogCompetitor] = useState<string[]>([])
 
   /** Quy đổi 1 ô (hệ 0x88) sang tọa độ % trên bàn cờ hiển thị, có tính lật bàn cờ */
   function squareToPercent(sq: number): { left: number; top: number } {
@@ -51,45 +54,33 @@ export default function ChessBoard() {
     return { left: col * 12.5, top: row * 12.5 }
   }
 
-  const newGame = useChessStore(s => s.newGame)
-
-  const turn = useChessStore(s => s.turn)
-
+  // Tách khay quân bị ăn thành 2 danh sách URL ảnh:
+  // - capturedLogMine:       quân BẠN đã ăn được (quân của đối thủ)
+  // - capturedLogCompetitor: quân ĐỐI THỦ đã ăn (quân của bạn)
   useEffect(() => {
-    newGame({ side: 'white', vsEngine: false }) // 2 người chơi để test trước
-  }, [newGame])
+    const mine: string[] = []
+    const competitor: string[] = []
+
+    for (const c of capturedLog) {
+      const src = findPieceImageSrc(c.piece)
+
+      if (c.byUser) mine.push(src)
+      else competitor.push(src)
+    }
+
+    setCapturedLogMine(mine)
+    setCapturedLogCompetitor(competitor)
+  }, [capturedLog])
 
   return (
     <div className='relative inline-block select-none'>
-      <div
-        className={`flex gap-2 items-center justify-between mb-2 bg-(--bg-lighter) rounded-lg border p-3 border-(--border-lighter)`}
-        style={{
-          backgroundImage: 'url(https://cdn.vietnamexploration.com/vnexploration/2026/06/27183346-7bd34746-bg-11.webp)',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover'
-        }}
-      >
-        <div></div>
-
-        <div className='flex gap-2 items-center'>
-          <div>
-            <div className='font-ink truncate w-full mb-1 text-end text-xl'>Máy</div>
-            <div className='flex gap-1 items-center bg-black/20 text-white py-1 px-2' style={{ borderRadius: '5px' }}>
-              <i className='ri-star-fill w-[18px] text-warning'></i>
-              <div>2000</div>
-            </div>
-          </div>
-
-          <CustomAvatar src={machineLevels[currentLevel - 1]} alt='Machine' size={80} />
-        </div>
-      </div>
+      <Player currentLevel={currentLevel} isCompetitor={true} score={2000} capturedLogs={capturedLogCompetitor} />
 
       <div
-        className='relative grid grid-cols-8 border-4 border-primary rounded-sm overflow-hidden shadow-xl'
+        className='relative grid grid-cols-8 border-4 border-primary rounded-sm overflow-hidden shadow-xl my-2'
         style={{
-          width: 'min(90vw, 560px)',
-          height: 'min(90vw, 560px)'
+          width: 'min(90vw, 504px)',
+          height: 'min(90vw, 504px)'
         }}
       >
         {/* ===== LỚP NỀN: màu ô + highlight + tọa độ + click - KHÔNG vẽ quân cờ ===== */}
@@ -175,29 +166,7 @@ export default function ChessBoard() {
         </div>
       </div>
 
-      <div
-        className={`mt-2 flex gap-2 items-center justify-between bg-[--bg-lighter] rounded-lg border p-3 border-(--border-lighter)`}
-        style={{
-          backgroundImage: 'url(https://cdn.vietnamexploration.com/vnexploration/2026/06/27183346-7bd34746-bg-11.webp)',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover'
-        }}
-      >
-        <div className='flex gap-2 items-center'>
-          <CustomAvatar src='/images/avatars/man-1.webp' alt='Victor Anderson' size={80} />
-
-          <div>
-            <div className='font-ink truncate w-full mb-1 text-xl'>Bạn</div>
-            <div className='flex gap-1 items-center bg-black/20 text-white py-1 px-2' style={{ borderRadius: '5px' }}>
-              <i className='ri-star-fill w-[18px] text-warning'></i>
-              <div>2000</div>
-            </div>
-          </div>
-        </div>
-
-        <div></div>
-      </div>
+      <Player currentLevel={currentLevel} isCompetitor={false} score={2000} capturedLogs={capturedLogMine} />
 
       {pendingPromotion && <PromotionPicker />}
     </div>

@@ -37,6 +37,15 @@ export interface MoveLogEntry {
   san: string
 }
 
+/** Một quân đã bị ăn - dùng cho khay quân bị ăn ở 2 thanh Player */
+export interface ChessCapturedEntry {
+  /** Quân bị ăn ('Q','n','p'... hoa = Trắng, thường = Đen) */
+  piece: Piece
+
+  /** Quân này bị NGƯỜI CHƠI ăn (true) hay bị đối thủ/máy ăn (false) */
+  byUser: boolean
+}
+
 /** Thông tin khi đang chờ người chơi chọn quân phong cấp */
 export interface PendingPromotion {
   from: number
@@ -125,6 +134,9 @@ interface ChessState {
   gameId: string
   /** Thời điểm bắt đầu ván (mili-giây, Date.now()) */
   startedAt: number
+
+  /** Quân cờ bị ăn */
+  capturedLog: ChessCapturedEntry[]
 
   // ================= HÀNH ĐỘNG (ACTIONS) =================
 
@@ -338,6 +350,7 @@ export const useChessStore = create<ChessState>()((set, get) => {
     engineError: null,
     gameId: '',
     startedAt: 0,
+    capturedLog: [],
 
     // ----- actions -----
 
@@ -368,7 +381,8 @@ export const useChessStore = create<ChessState>()((set, get) => {
         busy: false,
         engineError: null,
         gameId: createGameId(),
-        startedAt: Date.now()
+        startedAt: Date.now(),
+        capturedLog: []
       })
 
       // Nếu máy đi trước (vd người chơi chọn cầm quân Đen), gọi máy ngay
@@ -407,7 +421,7 @@ export const useChessStore = create<ChessState>()((set, get) => {
     },
 
     makeMove: move => {
-      const { position, moveLog, pieces } = get()
+      const { position, moveLog, pieces, capturedLog, vsEngine, userColor } = get()
 
       // Đọc các thông tin cần thiết TRƯỚC KHI position bị mutate, vì board là
       // cùng 1 mảng bị đổi tại chỗ - đọc sau khi makeMove() sẽ ra dữ liệu MỚI, sai.
@@ -418,6 +432,8 @@ export const useChessStore = create<ChessState>()((set, get) => {
       const capturedSquare = isEnPassant ? move.to + (turnBeforeMove === WHITE ? -16 : 16) : wasCapture ? move.to : -1
       const isCastleK = move.flags.indexOf('k') >= 0
       const isCastleQ = move.flags.indexOf('q') >= 0
+      // Đọc quân bị ăn TRƯỚC KHI position bị mutate (đúng cả trường hợp bắt tốt qua đường)
+      const capturedPiece = capturedSquare >= 0 ? position.board[capturedSquare] : EMPTY
 
       // moveToSan() phải gọi TRƯỚC makeMove() thật sự, vì nó cần đọc thế cờ lúc CHƯA đi
       // để biết cách viết ký hiệu (vd có cần ghi rõ quân nào nếu bị nhập nhằng hay không).
@@ -426,6 +442,12 @@ export const useChessStore = create<ChessState>()((set, get) => {
       const uci = position.moveToUci(move)
       const d = derive(position)
       const nextPieces = advancePieces(pieces, move, movingPiece, capturedSquare, isCastleK, isCastleQ, turnBeforeMove)
+
+      // Ghi khay quân bị ăn: byUser = quân này do NGƯỜI CHƠI ăn (2 người chơi thì tính hết là "mine")
+      const nextCaptured =
+        capturedPiece !== EMPTY
+          ? [...capturedLog, { piece: capturedPiece, byUser: !vsEngine || turnBeforeMove === userColor }]
+          : capturedLog
 
       set({
         pieces: nextPieces,
@@ -438,7 +460,8 @@ export const useChessStore = create<ChessState>()((set, get) => {
         moveLog: [...moveLog, { uci, san }],
         viewIndex: moveLog.length, // = độ dài mảng mới - 1
         status: d.status,
-        gameOver: d.status.over
+        gameOver: d.status.over,
+        capturedLog: nextCaptured
       })
 
       if (d.status.over) {

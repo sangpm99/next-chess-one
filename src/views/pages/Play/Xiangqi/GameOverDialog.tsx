@@ -1,33 +1,34 @@
 'use client'
 
-// Popup hiện ra khi ván cờ kết thúc (chiếu bí / hòa / xin thua), hiển thị kết
-// quả và lý do, kèm nút bắt đầu ván mới cùng thiết lập cũ. Có thể đóng popup
-// để xem lại bàn cờ / danh sách nước đi (popup sẽ hiện lại ở ván kế tiếp).
+// Popup hiện ra khi ván cờ tướng kết thúc, hiển thị kết quả và lý do,
+// kèm nút bắt đầu ván mới cùng thiết lập cũ. Có thể đóng popup để xem lại
+// bàn cờ / danh sách nước đi (popup sẽ hiện lại ở ván kết thúc kế tiếp).
 
 import { useEffect, useState } from 'react'
 
 import Button from '@mui/material/Button'
 
-import { useChessStore } from '@/stores/chess'
-import { WHITE } from '@/lib/chess/constants'
-import type { GameOverReason } from '@/types/chess'
+import { useXiangqiStore } from '@/stores/xiangqi'
+import { RED } from '@/lib/xiangqi/constants'
+import type { XqGameOverReason } from '@/types/xiangqi'
 
-const REASON_LABEL: Record<GameOverReason, string> = {
-  checkmate: 'Chiếu bí',
-  stalemate: 'Hết nước đi hợp lệ (Hòa)',
-  fifty: 'Hòa theo luật 50 nước',
-  material: 'Hòa do không đủ quân để chiếu bí',
-  repetition: 'Hòa do lặp lại cùng một thế cờ 3 lần'
+const REASON_LABEL: Record<XqGameOverReason, string> = {
+  checkmate: 'Chiếu bí / hết nước đi',
+  material: 'Hòa do cả hai bên hết quân tấn công',
+  longgame: 'Hòa do quá lâu không ăn quân',
+  repetition: 'Hòa do lặp lại thế cờ',
+  perpetual: 'Xử thua do chiếu dai (luật cấm)'
 }
 
 export default function GameOverDialog() {
-  const status = useChessStore(s => s.status)
-  const resignedBy = useChessStore(s => s.resignedBy)
-  const gameOver = useChessStore(s => s.gameOver)
-  const userColor = useChessStore(s => s.userColor)
-  const vsEngine = useChessStore(s => s.vsEngine)
-  const gameId = useChessStore(s => s.gameId)
-  const newGame = useChessStore(s => s.newGame)
+  const status = useXiangqiStore(s => s.status)
+  const resignedBy = useXiangqiStore(s => s.resignedBy)
+  const gameOver = useXiangqiStore(s => s.gameOver)
+  const userColor = useXiangqiStore(s => s.userColor)
+  const vsEngine = useXiangqiStore(s => s.vsEngine)
+  const handicap = useXiangqiStore(s => s.handicap)
+  const gameId = useXiangqiStore(s => s.gameId)
+  const newGame = useXiangqiStore(s => s.newGame)
 
   // "Đã đóng" chỉ là trạng thái hiển thị cục bộ, không nằm trong store
   const [dismissed, setDismissed] = useState(false)
@@ -39,7 +40,7 @@ export default function GameOverDialog() {
 
   if (!gameOver || dismissed) return null
 
-  const userColorStr = userColor === WHITE ? 'white' : 'black'
+  const userColorStr = userColor === RED ? 'red' : 'black'
 
   let title = 'Ván cờ kết thúc'
   let detail = ''
@@ -56,7 +57,7 @@ export default function GameOverDialog() {
     if (vsEngine) {
       title = status.result === userColorStr ? 'Bạn thắng!' : 'Bạn thua'
     } else {
-      title = status.result === 'white' ? 'Trắng thắng' : 'Đen thắng'
+      title = status.result === 'red' ? 'Đỏ thắng' : 'Đen thắng'
     }
 
     detail = status.reason ? REASON_LABEL[status.reason] : ''
@@ -70,7 +71,7 @@ export default function GameOverDialog() {
         <div className='flex gap-2 mt-3'>
           <Button
             variant='contained'
-            onClick={() => newGame({ side: userColor === WHITE ? 'white' : 'black', vsEngine })}
+            onClick={() => newGame({ side: userColor === RED ? 'red' : 'black', vsEngine, handicap })}
           >
             Ván mới
           </Button>

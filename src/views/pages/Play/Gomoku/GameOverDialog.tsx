@@ -1,33 +1,31 @@
 'use client'
 
-// Popup hiện ra khi ván cờ kết thúc (chiếu bí / hòa / xin thua), hiển thị kết
-// quả và lý do, kèm nút bắt đầu ván mới cùng thiết lập cũ. Có thể đóng popup
-// để xem lại bàn cờ / danh sách nước đi (popup sẽ hiện lại ở ván kế tiếp).
+// Popup hiện ra khi ván cờ caro kết thúc, hiển thị kết quả và lý do,
+// kèm nút bắt đầu ván mới cùng thiết lập cũ. Có thể đóng popup để xem lại
+// bàn cờ / danh sách nước đi (popup sẽ hiện lại ở ván kết thúc kế tiếp).
 
 import { useEffect, useState } from 'react'
 
 import Button from '@mui/material/Button'
 
-import { useChessStore } from '@/stores/chess'
-import { WHITE } from '@/lib/chess/constants'
-import type { GameOverReason } from '@/types/chess'
+import { useGomokuStore, BLACK } from '@/stores/gomoku'
+import type { GmGameOverReason } from '@/types/gomoku'
 
-const REASON_LABEL: Record<GameOverReason, string> = {
-  checkmate: 'Chiếu bí',
-  stalemate: 'Hết nước đi hợp lệ (Hòa)',
-  fifty: 'Hòa theo luật 50 nước',
-  material: 'Hòa do không đủ quân để chiếu bí',
-  repetition: 'Hòa do lặp lại cùng một thế cờ 3 lần'
+const REASON_LABEL: Record<GmGameOverReason, string> = {
+  five: 'Tạo được hàng 5 quân liên tiếp',
+  overline: 'Đen phạm luật hàng dài (6+ quân) trong luật Renju',
+  full: 'Hòa do bàn cờ đã đầy'
 }
 
 export default function GameOverDialog() {
-  const status = useChessStore(s => s.status)
-  const resignedBy = useChessStore(s => s.resignedBy)
-  const gameOver = useChessStore(s => s.gameOver)
-  const userColor = useChessStore(s => s.userColor)
-  const vsEngine = useChessStore(s => s.vsEngine)
-  const gameId = useChessStore(s => s.gameId)
-  const newGame = useChessStore(s => s.newGame)
+  const status = useGomokuStore(s => s.status)
+  const resignedBy = useGomokuStore(s => s.resignedBy)
+  const gameOver = useGomokuStore(s => s.gameOver)
+  const userColor = useGomokuStore(s => s.userColor)
+  const vsEngine = useGomokuStore(s => s.vsEngine)
+  const rule = useGomokuStore(s => s.rule)
+  const gameId = useGomokuStore(s => s.gameId)
+  const newGame = useGomokuStore(s => s.newGame)
 
   // "Đã đóng" chỉ là trạng thái hiển thị cục bộ, không nằm trong store
   const [dismissed, setDismissed] = useState(false)
@@ -39,7 +37,7 @@ export default function GameOverDialog() {
 
   if (!gameOver || dismissed) return null
 
-  const userColorStr = userColor === WHITE ? 'white' : 'black'
+  const userColorStr = userColor === BLACK ? 'black' : 'white'
 
   let title = 'Ván cờ kết thúc'
   let detail = ''
@@ -56,7 +54,7 @@ export default function GameOverDialog() {
     if (vsEngine) {
       title = status.result === userColorStr ? 'Bạn thắng!' : 'Bạn thua'
     } else {
-      title = status.result === 'white' ? 'Trắng thắng' : 'Đen thắng'
+      title = status.result === 'black' ? 'Đen thắng' : 'Trắng thắng'
     }
 
     detail = status.reason ? REASON_LABEL[status.reason] : ''
@@ -70,7 +68,7 @@ export default function GameOverDialog() {
         <div className='flex gap-2 mt-3'>
           <Button
             variant='contained'
-            onClick={() => newGame({ side: userColor === WHITE ? 'white' : 'black', vsEngine })}
+            onClick={() => newGame({ side: userColor === BLACK ? 'black' : 'white', vsEngine, rule })}
           >
             Ván mới
           </Button>

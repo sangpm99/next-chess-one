@@ -1,33 +1,33 @@
 'use client'
 
-// Popup hiện ra khi ván cờ kết thúc (chiếu bí / hòa / xin thua), hiển thị kết
-// quả và lý do, kèm nút bắt đầu ván mới cùng thiết lập cũ. Có thể đóng popup
-// để xem lại bàn cờ / danh sách nước đi (popup sẽ hiện lại ở ván kế tiếp).
+// Popup hiện ra khi ván cờ úp kết thúc, hiển thị kết quả và lý do,
+// kèm nút bắt đầu ván mới cùng thiết lập cũ. Có thể đóng popup để xem lại
+// bàn cờ / danh sách nước đi (popup sẽ hiện lại ở ván kết thúc kế tiếp).
 
 import { useEffect, useState } from 'react'
 
 import Button from '@mui/material/Button'
 
-import { useChessStore } from '@/stores/chess'
-import { WHITE } from '@/lib/chess/constants'
-import type { GameOverReason } from '@/types/chess'
+import { useJieqiStore } from '@/stores/jieqi'
+import { RED } from '@/lib/jieqi/constants'
+import type { JqGameOverReason } from '@/types/jieqi'
 
-const REASON_LABEL: Record<GameOverReason, string> = {
-  checkmate: 'Chiếu bí',
-  stalemate: 'Hết nước đi hợp lệ (Hòa)',
-  fifty: 'Hòa theo luật 50 nước',
-  material: 'Hòa do không đủ quân để chiếu bí',
-  repetition: 'Hòa do lặp lại cùng một thế cờ 3 lần'
+const REASON_LABEL: Record<JqGameOverReason, string> = {
+  checkmate: 'Chiếu bí / hết nước đi',
+  material: 'Hòa do hai bên chỉ còn Tướng trơ trọi',
+  longgame: 'Hòa do quá lâu không ăn quân, không lật quân',
+  repetition: 'Hòa do lặp lại thế cờ',
+  perpetual: 'Xử thua do chiếu dai (luật cấm)'
 }
 
 export default function GameOverDialog() {
-  const status = useChessStore(s => s.status)
-  const resignedBy = useChessStore(s => s.resignedBy)
-  const gameOver = useChessStore(s => s.gameOver)
-  const userColor = useChessStore(s => s.userColor)
-  const vsEngine = useChessStore(s => s.vsEngine)
-  const gameId = useChessStore(s => s.gameId)
-  const newGame = useChessStore(s => s.newGame)
+  const status = useJieqiStore(s => s.status)
+  const resignedBy = useJieqiStore(s => s.resignedBy)
+  const gameOver = useJieqiStore(s => s.gameOver)
+  const userColor = useJieqiStore(s => s.userColor)
+  const vsEngine = useJieqiStore(s => s.vsEngine)
+  const gameId = useJieqiStore(s => s.gameId)
+  const newGame = useJieqiStore(s => s.newGame)
 
   // "Đã đóng" chỉ là trạng thái hiển thị cục bộ, không nằm trong store
   const [dismissed, setDismissed] = useState(false)
@@ -39,7 +39,7 @@ export default function GameOverDialog() {
 
   if (!gameOver || dismissed) return null
 
-  const userColorStr = userColor === WHITE ? 'white' : 'black'
+  const userColorStr = userColor === RED ? 'red' : 'black'
 
   let title = 'Ván cờ kết thúc'
   let detail = ''
@@ -56,7 +56,7 @@ export default function GameOverDialog() {
     if (vsEngine) {
       title = status.result === userColorStr ? 'Bạn thắng!' : 'Bạn thua'
     } else {
-      title = status.result === 'white' ? 'Trắng thắng' : 'Đen thắng'
+      title = status.result === 'red' ? 'Đỏ thắng' : 'Đen thắng'
     }
 
     detail = status.reason ? REASON_LABEL[status.reason] : ''
@@ -68,10 +68,7 @@ export default function GameOverDialog() {
         <h2 className='text-lg font-bold text-[#5b3a29]'>{title}</h2>
         {detail && <p className='text-sm text-[#8a6b52]'>{detail}</p>}
         <div className='flex gap-2 mt-3'>
-          <Button
-            variant='contained'
-            onClick={() => newGame({ side: userColor === WHITE ? 'white' : 'black', vsEngine })}
-          >
+          <Button variant='contained' onClick={() => newGame({ side: userColor === RED ? 'red' : 'black', vsEngine })}>
             Ván mới
           </Button>
 
