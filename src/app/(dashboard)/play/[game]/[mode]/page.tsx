@@ -25,9 +25,9 @@ export default async function AIPage({ params }: Props) {
         <ChessAI gameValue={game} gameModeValue={mode}></ChessAI>
       )}
 
-      {/*{game?.toLowerCase() === 'xiangqi' && mode?.toLowerCase() === 'ai' && (*/}
-      {/*  <XiangqiAI gameValue={game} gameModeValue={mode}></XiangqiAI>*/}
-      {/*)}*/}
+      {game?.toLowerCase() === 'xiangqi' && mode?.toLowerCase() === 'ai' && (
+        <XiangqiAI gameValue={game} gameModeValue={mode}></XiangqiAI>
+      )}
 
       {/*{game?.toLowerCase() === 'jieqi' && mode?.toLowerCase() === 'ai' && (*/}
       {/*  <JieqiAI gameValue={game} gameModeValue={mode}></JieqiAI>*/}
