@@ -29,13 +29,13 @@ export default async function AIPage({ params }: Props) {
         <XiangqiAI gameValue={game} gameModeValue={mode}></XiangqiAI>
       )}
 
-      {/*{game?.toLowerCase() === 'jieqi' && mode?.toLowerCase() === 'ai' && (*/}
-      {/*  <JieqiAI gameValue={game} gameModeValue={mode}></JieqiAI>*/}
-      {/*)}*/}
+      {game?.toLowerCase() === 'jieqi' && mode?.toLowerCase() === 'ai' && (
+        <JieqiAI gameValue={game} gameModeValue={mode}></JieqiAI>
+      )}
 
-      {/*{game?.toLowerCase() === 'gomoku' && mode?.toLowerCase() === 'ai' && (*/}
-      {/*  <GomokuAI gameValue={game} gameModeValue={mode}></GomokuAI>*/}
-      {/*)}*/}
+      {game?.toLowerCase() === 'gomoku' && mode?.toLowerCase() === 'ai' && (
+        <GomokuAI gameValue={game} gameModeValue={mode}></GomokuAI>
+      )}
     </SectionWrapper>
   )
 }
