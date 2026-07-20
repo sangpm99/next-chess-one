@@ -80,18 +80,24 @@
   --drawer-z-index: var(--mui-zIndex-drawer);
   --backdrop-color: rgb(var(--mui-mainColorChannels-light) / 0.5);
   --mui-mainColorChannels-shadow: var(--mui-mainColorChannels-lightShadow);
-  --bg-default: #faf7f2;
-  --bg-dark: #fcf3e8;
-  --bg-header: #73634f;
-  --bg-lighter: #fdf6ec;
   --primary: var(--mui-palette-primary-main);
   --secondary: #326054;
+  /*  Color */
+
+  /*  Background */
+  --bg-header: #73634f;
+  --bg-default: #faf7f2;
+  --bg-lighter: #fdf6ec;
+  --bg-dark: #fcf3e8;
   --gold: #fdeed0;
   --gold-dark: #e9ac02;
   --silver: #eff0ee;
   --silver-dark: #7f98a4;
   --copper: #f9e0ca;
   --copper-dark: #c97424;
+  --bg-select: #e4dbd2;
+
+  /*  Border */
   --border: #eedbc8;
   --border-lighter: #e3d5bd;
 }
@@ -282,6 +288,15 @@ img {
 .link:hover {
   text-decoration: underline;
 }
+
+/* Color */
+
+/* Background */
+.bg-lighter {background-color: var(--bg-lighter);}
+.bg-select {background-color: var(--bg-select);}
+
+/* Border */
+.border-lighter {border: 1px solid var(--border-lighter);}
 
 /* Animation */
 .flash {

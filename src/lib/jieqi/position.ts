@@ -254,8 +254,8 @@ export class Position {
     this.setIrrev()
   }
 
-  private poolToString(tag: number): string {
-    const p = this.pool[tag]
+  private poolToString(tag: number, poolObj?: Record<number, number>): string {
+    const p = poolObj || this.pool[tag]
     let s = ''
     const POOL_ORDER = [PIECE_ROOK, PIECE_ADVISOR, PIECE_CANNON, PIECE_PAWN, PIECE_KNIGHT, PIECE_BISHOP]
 
@@ -310,6 +310,57 @@ export class Position {
     if (rest === '') rest = '-'
 
     return fen + ' ' + (this.sdPlayer === RED ? 'w' : 'b') + ' ' + rest + ' ' + this.halfmove + ' ' + this.fullmove
+  }
+
+  /**
+   * Hồ quân "theo góc nhìn của engine": với những bên bị che thông tin
+   * (hideRed / hideBlack), các quân úp ĐÃ BỊ ĂN được CỘNG NGƯỢC danh tính về
+   * hồ - engine sẽ coi như chúng "vẫn còn trong túi", không biết chính xác
+   * quân nào đã ra khỏi ván.
+   */
+  engineAdjustedPool(hideRed: boolean, hideBlack: boolean): Record<number, Record<number, number>> {
+    const adj: Record<number, Record<number, number>> = { 8: {}, 16: {} }
+
+    for (const tag of [8, 16]) {
+      const src = this.pool[tag] || {}
+
+      for (const k in src) adj[tag][k] = src[k]
+    }
+
+    for (let i = 1; i < this.histList.length; i++) {
+      const h = this.histList[i]
+
+      if (!h || h.revealCap == null || h.revealCap < 0) continue
+      const capTag = h.capPc < 16 ? 8 : 16
+
+      if ((capTag === 8 && hideRed) || (capTag === 16 && hideBlack)) {
+        adj[capTag][h.revealCap] = (adj[capTag][h.revealCap] || 0) + 1
+      }
+    }
+
+    return adj
+  }
+
+  /**
+   * FEN gửi cho ENGINE, đã điều chỉnh hồ quân theo chế độ hiển thị quân úp
+   * (darkViewMode) để máy không "ăn gian" thông tin mà người chơi không có:
+   * - mode 1 (Ẩn tất cả): che danh tính mọi quân úp đã bị ăn của CẢ 2 BÊN.
+   * - mode 2 (Hiện một phần): chỉ NGƯỜI ĂN biết danh tính -> che danh tính
+   *   các quân úp CỦA CHÍNH MÁY đã bị người chơi ăn (engineSd = màu của máy).
+   * - mode 3 (Hiện tất cả): ai cũng biết hết -> gửi FEN thật, không điều chỉnh.
+   */
+  toEngineFen(mode: number, engineSd: JqColor): string {
+    if (mode !== 1 && mode !== 2) return this.toFen()
+
+    const hideRed = mode === 1 || engineSd === 0
+    const hideBlack = mode === 1 || engineSd === 1
+    const adj = this.engineAdjustedPool(hideRed, hideBlack)
+    const parts = this.toFen().trim().split(/\s+/)
+    const rest = this.poolToString(8, adj[8]) + this.poolToString(16, adj[16])
+
+    parts[2] = rest === '' ? '-' : rest
+
+    return parts.join(' ')
   }
 
   // ================= LUẬT DI CHUYỂN =================

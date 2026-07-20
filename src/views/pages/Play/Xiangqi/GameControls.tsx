@@ -51,8 +51,8 @@ export default function GameControls() {
 
   return (
     <div className='flex flex-col gap-3 w-full max-w-[560px]'>
-      <div className='bg-[#fdf6ec] rounded-lg border border-[#e3d5bd] p-3 flex flex-col gap-2'>
-        <p className='text-sm font-semibold text-[#5b3a29]'>Ván mới</p>
+      <div className='bg-lighter border-lighter rounded-lg p-3 flex flex-col gap-2'>
+        <p className='text-sm font-semibold text-primary'>CHỌN QUÂN CỜ</p>
         <div className='flex gap-2'>
           <SideButton label='Cầm Đỏ' active={side === 'red'} onClick={() => setSide('red')} />
           <SideButton label='Cầm Đen' active={side === 'black'} onClick={() => setSide('black')} />

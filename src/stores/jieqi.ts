@@ -105,8 +105,13 @@ interface JieqiState {
   /** Danh sách quân đã bị ăn (theo thứ tự thời gian) */
   capturedLog: JqCapturedEntry[]
 
-  /** Hiện danh tính thật của quân úp mà NGƯỜI CHƠI đã ăn trong khay (mặc định tắt, giống bản gốc) */
-  showCaptured: boolean
+  /**
+   * Chế độ hiển thị danh tính quân úp ĐÃ BỊ ĂN (mặc định 1, giống bản gốc):
+   * 1 = Ẩn tất cả, 2 = Hiện một phần (chỉ người ăn thấy), 3 = Hiện tất cả.
+   * Chế độ này cũng quyết định lượng thông tin hồ quân gửi cho engine
+   * (xem Position.toEngineFen) để máy không biết nhiều hơn người chơi.
+   */
+  darkViewMode: 1 | 2 | 3
 
   /** Đang xem thế cờ tại nước thứ mấy (-1 = thế cờ bắt đầu) */
   viewIndex: number
@@ -177,8 +182,8 @@ interface JieqiState {
   /** Bật / tắt âm thanh */
   toggleSound: () => void
 
-  /** Bật / tắt hiện danh tính quân úp người chơi đã ăn trong khay */
-  toggleShowCaptured: () => void
+  /** Đổi chế độ hiển thị danh tính quân úp đã bị ăn (1 = ẩn, 2 = một phần, 3 = tất cả) */
+  setDarkViewMode: (mode: 1 | 2 | 3) => void
 
   /** Bật/tắt trạng thái "đang bận" (dùng nội bộ) */
   setBusy: (busy: boolean) => void
@@ -252,12 +257,19 @@ export const useJieqiStore = create<JieqiState>()((set, get) => {
     set({ busy: true, engineError: null })
 
     try {
-      const fen = s.position.toFen()
-      const result = await requestJqEngineMove(fen, { level: s.level })
+      // FEN thật dùng để kiểm tra "thế cờ còn nguyên không" sau khi chờ máy
+      const fenKey = s.position.toFen()
+
+      // FEN gửi máy: hồ quân đã điều chỉnh theo chế độ hiển thị quân úp,
+      // để máy không biết danh tính các quân úp bị ăn mà nó không được phép biết
+      const engineSd = (1 - s.userColor) as JqColor
+      const fenForEngine = s.position.toEngineFen(s.darkViewMode, engineSd)
+
+      const result = await requestJqEngineMove(fenForEngine, { level: s.level })
       const current = get()
 
       // Người chơi có thể đã bắt đầu ván khác trong lúc chờ máy trả lời
-      if (current.position.toFen() !== fen) return
+      if (current.position.toFen() !== fenKey) return
 
       // uciToMove tự đọc cả ký tự lật quân mà engine chỉ định (vd "a3a4Nc")
       const mv = current.position.uciToMove(result.move)
@@ -328,7 +340,7 @@ export const useJieqiStore = create<JieqiState>()((set, get) => {
     lastMove: null,
     moveLog: [],
     capturedLog: [],
-    showCaptured: false,
+    darkViewMode: 1,
     viewIndex: -1,
     status: initialDerived.status,
     resignedBy: null,
@@ -536,7 +548,7 @@ export const useJieqiStore = create<JieqiState>()((set, get) => {
 
     toggleSound: () => set(s => ({ soundEnabled: !s.soundEnabled })),
 
-    toggleShowCaptured: () => set(s => ({ showCaptured: !s.showCaptured })),
+    setDarkViewMode: mode => set({ darkViewMode: mode }),
 
     setBusy: busy => set({ busy })
   }

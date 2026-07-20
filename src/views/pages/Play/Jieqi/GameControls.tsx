@@ -7,6 +7,8 @@
 import { useState } from 'react'
 
 import Button from '@mui/material/Button'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 
 import { useJieqiStore } from '@/stores/jieqi'
 
@@ -29,8 +31,8 @@ export default function GameControls() {
   const resign = useJieqiStore(s => s.resign)
   const toggleSound = useJieqiStore(s => s.toggleSound)
   const soundEnabled = useJieqiStore(s => s.soundEnabled)
-  const toggleShowCaptured = useJieqiStore(s => s.toggleShowCaptured)
-  const showCaptured = useJieqiStore(s => s.showCaptured)
+  const darkViewMode = useJieqiStore(s => s.darkViewMode)
+  const setDarkViewMode = useJieqiStore(s => s.setDarkViewMode)
   const gameOver = useJieqiStore(s => s.gameOver)
   const vsEngine = useJieqiStore(s => s.vsEngine)
   const moveLog = useJieqiStore(s => s.moveLog)
@@ -50,8 +52,8 @@ export default function GameControls() {
 
   return (
     <div className='flex flex-col gap-3 w-full max-w-[560px]'>
-      <div className='bg-[#fdf6ec] rounded-lg border border-[#e3d5bd] p-3 flex flex-col gap-2'>
-        <p className='text-sm font-semibold text-[#5b3a29]'>Ván mới</p>
+      <div className='bg-lighter border-lighter rounded-lg p-3 flex flex-col gap-2'>
+        <p className='text-sm font-semibold text-primary'>CHỌN QUÂN CỜ</p>
         <div className='flex gap-2'>
           <SideButton label='Cầm Đỏ' active={side === 'red'} onClick={() => setSide('red')} />
           <SideButton label='Cầm Đen' active={side === 'black'} onClick={() => setSide('black')} />
@@ -79,6 +81,19 @@ export default function GameControls() {
           </label>
         )}
 
+        <label className='flex-1 flex flex-col gap-1 text-xs text-[#5b3a29]'>
+          <span>Quân úp đã bị ăn</span>
+          <Select
+            size='small'
+            value={darkViewMode}
+            onChange={e => setDarkViewMode(Number(e.target.value) as 1 | 2 | 3)}
+          >
+            <MenuItem value={1}>Ẩn tất cả</MenuItem>
+            <MenuItem value={2}>Chỉ người ăn thấy</MenuItem>
+            <MenuItem value={3}>Hiện tất cả</MenuItem>
+          </Select>
+        </label>
+
         <Button
           onClick={() => newGame({ side, vsEngine: side !== 'two-player', level })}
           variant='contained'
@@ -96,13 +111,6 @@ export default function GameControls() {
         className='flex-1 rounded-md bg-white border border-[#e3d5bd] text-sm font-medium text-[#5b3a29] hover:bg-[#f5ead7] transition-colors'
       >
         Âm thanh: {soundEnabled ? 'Bật' : 'Tắt'}
-      </Button>
-
-      <Button
-        onClick={() => toggleShowCaptured()}
-        className='flex-1 rounded-md bg-white border border-[#e3d5bd] text-sm font-medium text-[#5b3a29] hover:bg-[#f5ead7] transition-colors'
-      >
-        Hiện quân úp đã ăn: {showCaptured ? 'Bật' : 'Tắt'}
       </Button>
 
       <Button

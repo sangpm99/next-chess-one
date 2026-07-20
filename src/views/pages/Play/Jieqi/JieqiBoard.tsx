@@ -10,19 +10,23 @@ import { useState, useEffect } from 'react'
 
 import { useJieqiStore } from '@/stores/jieqi'
 import { FILE_X, RANK_Y, COORD_XY } from '@/lib/jieqi/constants'
-import type { JqPieceChar } from '@/types/jieqi'
 import { findPieceXiangqiImageSrc } from '@/utils'
+
+import type { JqPieceChar } from '@/types/jieqi'
+import type { CapturedLogItem } from '@/components/Player'
 
 import Player from '@/components/Player'
 
 const LINE_COLOR = '#5d2e0c'
+
+/** Ảnh mặt lưng quân úp (dùng chung cho quân trên bàn và khay quân bị ăn) */
 const DARK_IMAGE = 'https://cdn.vietnamexploration.com/vnexploration/2026/07/11170250-49008bea-co-up-empty.webp'
 
 /** Kích thước 1 "ô" theo %: 9 cột x 10 hàng giao điểm */
 const CELL_W = 100 / 9
 const CELL_H = 100 / 10
 
-/** 1 quân cờ dạng đĩa tròn: úp = mặt lưng có hoa văn, lật = chữ Hán */
+/** 1 quân cờ 2 mặt: mặt úp + mặt thật, lật 3D quanh trục ngang khi dark chuyển true -> false */
 function PieceDisc({ piece, dark }: { piece: JqPieceChar; dark: boolean }) {
   return (
     // Lớp ngoài tạo "độ sâu" phối cảnh cho hiệu ứng 3D
@@ -42,7 +46,7 @@ function PieceDisc({ piece, dark }: { piece: JqPieceChar; dark: boolean }) {
       >
         {/* Mặt LƯNG (úp) */}
         <img
-          src='https://cdn.vietnamexploration.com/vnexploration/2026/07/11170250-49008bea-co-up-empty.webp'
+          src={DARK_IMAGE}
           alt='úp'
           draggable={false}
           className='absolute inset-0 w-full h-full object-contain'
@@ -82,10 +86,10 @@ export default function JieqiBoard() {
   const selectSquare = useJieqiStore(s => s.selectSquare)
   const currentLevel = useJieqiStore(s => s.level)
   const capturedLog = useJieqiStore(s => s.capturedLog)
-  const showCaptured = useJieqiStore(s => s.showCaptured)
+  const darkViewMode = useJieqiStore(s => s.darkViewMode)
 
-  const [capturedLogMine, setCapturedLogMine] = useState<string[]>([])
-  const [capturedLogCompetitor, setCapturedLogCompetitor] = useState<string[]>([])
+  const [capturedLogMine, setCapturedLogMine] = useState<CapturedLogItem[]>([])
+  const [capturedLogCompetitor, setCapturedLogCompetitor] = useState<CapturedLogItem[]>([])
 
   const targets = selected >= 0 ? legalMoves.filter(m => m.from === selected).map(m => m.to) : []
   const isCheckNow = status ? status.check || (status.over && status.reason === 'checkmate') : false
@@ -129,23 +133,24 @@ export default function JieqiBoard() {
   }
 
   useEffect(() => {
-    const mine: string[] = []
-    const competitor: string[] = []
+    const mine: CapturedLogItem[] = []
+    const competitor: CapturedLogItem[] = []
 
     for (const c of capturedLog) {
-      // Quân lộ mặt luôn hiện thật; quân úp chỉ hiện thật khi người chơi ăn VÀ đã bật showCaptured
-      const showReal = !c.wasDark || (showCaptured && c.byUser)
+      const showReal = !c.wasDark || darkViewMode === 3 || (darkViewMode === 2 && c.byUser)
       const realChar = (c.color === 'red' ? c.realType.toUpperCase() : c.realType) as JqPieceChar
 
-      const src = showReal && c.realType !== 'x' ? findPieceXiangqiImageSrc(realChar) : DARK_IMAGE
+      // Quân úp được lộ danh tính -> vẽ mờ (dimmed) để phân biệt với quân vốn lộ mặt
+      const item: CapturedLogItem =
+        showReal && c.realType !== 'x' ? { src: findPieceXiangqiImageSrc(realChar), dimmed: c.wasDark } : DARK_IMAGE
 
-      if (c.byUser) mine.push(src)
-      else competitor.push(src)
+      if (c.byUser) mine.push(item)
+      else competitor.push(item)
     }
 
     setCapturedLogMine(mine)
     setCapturedLogCompetitor(competitor)
-  }, [capturedLog, showCaptured])
+  }, [capturedLog, darkViewMode])
 
   return (
     <div className='relative inline-block select-none'>

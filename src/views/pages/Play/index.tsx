@@ -63,6 +63,40 @@ export default function Play() {
             style={{ objectFit: 'cover' }}
           />
 
+          <div className='hidden xl:block'>
+            {index !== 0 && (
+              <div
+                className='w-6 h-full absolute top-0 z-3 -left-3'
+                style={{
+                  backgroundImage: 'url(/divider.png)',
+                  backgroundSize: 'cover'
+                }}
+              ></div>
+            )}
+          </div>
+
+          <div className='hidden sm:block xl:hidden'>
+            {index !== 0 && index !== 2 && (
+              <div
+                className='w-6 h-full absolute top-0 z-3 -left-3'
+                style={{
+                  backgroundImage: 'url(/divider.png)',
+                  backgroundSize: 'cover'
+                }}
+              ></div>
+            )}
+
+            {index <= 1 && (
+              <div
+                className='h-6 w-full absolute z-3 -bottom-3 left-0'
+                style={{
+                  backgroundImage: 'url(/divider-2.png)',
+                  backgroundSize: 'cover'
+                }}
+              ></div>
+            )}
+          </div>
+
           <div
             className={`absolute top-0 left-0 right-0 bottom-0 ${styles.overlay} ${selectedGame === item.value ? 'block' : 'hidden'}`}
           ></div>

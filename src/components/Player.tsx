@@ -3,11 +3,18 @@
 import CustomAvatar from '@core/components/mui/Avatar'
 import { machineLevels } from '@/enums'
 
+/**
+ * Một quân trong khay quân bị ăn. Truyền chuỗi URL cho trường hợp thường;
+ * truyền object khi cần vẽ mờ (cờ úp: quân úp đã bị lộ danh tính hiển thị
+ * opacity thấp để phân biệt với quân vốn lộ mặt).
+ */
+export type CapturedLogItem = string | { src: string; dimmed?: boolean }
+
 interface Props {
   currentLevel: number
   isCompetitor: boolean
   score: number
-  capturedLogs?: string[]
+  capturedLogs?: CapturedLogItem[]
 }
 
 export default function Player({ currentLevel, isCompetitor, score, capturedLogs }: Props) {
@@ -27,11 +34,22 @@ export default function Player({ currentLevel, isCompetitor, score, capturedLogs
       <div
         className={`flex-1 min-w-0 self-stretch flex flex-wrap content-end items-end ${isCompetitor ? 'justify-end' : ''}`}
       >
-        {capturedLogs &&
-          capturedLogs?.length > 0 &&
-          capturedLogs.map((src, index) => (
-            <img key={index} src={src} width={26} height={26} alt='' draggable={false} />
-          ))}
+        {capturedLogs?.map((item, index) => {
+          // Chuẩn hóa: chuỗi -> object, để bên dưới xử lý 1 kiểu duy nhất
+          const { src, dimmed } = typeof item === 'string' ? { src: item, dimmed: false } : item
+
+          return (
+            <img
+              key={index}
+              src={src}
+              width={26}
+              height={26}
+              alt=''
+              draggable={false}
+              style={dimmed ? { opacity: 0.55 } : undefined}
+            />
+          )
+        })}
       </div>
 
       <div className={`flex gap-2 ${isCompetitor ? 'flex-row' : 'flex-row-reverse'}`}>
